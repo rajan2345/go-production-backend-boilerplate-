@@ -109,3 +109,5 @@ func LoadConfig() (*Config, error) {
 
 	return mainConfig, nil
 }
+
+// External Library -- validator, koanf, godotenv, zerolog.

@@ -1,6 +1,8 @@
 package errs
 
-import "net/http"
+import (
+	"net/http"
+)
 
 // this is 404 error
 func NewUnauthorizeError(message string, override bool) *HttpError {
@@ -38,3 +40,33 @@ func NewBadRequestError(message string, override bool, code *string, errors []Fi
 		Action:   action,
 	}
 }
+
+func NewNotFoundError(message string, override bool, code *string) *HttpError {
+	formattedCode := MakeUpperCaseWithUnderscores(http.StatusText(http.StatusNotFound))
+
+	if code != nil {
+		formattedCode = *code
+	}
+
+	return &HttpError{
+		Code:     formattedCode,
+		Message:  message,
+		Status:   http.StatusNotFound,
+		Override: override,
+	}
+}
+
+func NewInternalServerError() *HttpError {
+	return &HttpError{
+		Code:     MakeUpperCaseWithUnderscores(http.StatusText(http.StatusInternalServerError)),
+		Message:  http.StatusText(http.StatusInternalServerError),
+		Status:   http.StatusInternalServerError,
+		Override: false,
+	}
+}
+
+func ValidationError(err error) *HttpError {
+	return NewBadRequestError("Validation failde: "+err.Error(), false, nil, nil, nil)
+}
+
+// library Used -- net/http

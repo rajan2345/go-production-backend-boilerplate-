@@ -29,6 +29,7 @@ type Config struct {
 	Auth          AuthConfig           `koanf:"auth" validate:"required"`
 	Redis         RedisConfig          `koanf:"redis" validate:"required"`
 	Observability *ObservabilityConfig `koanf:"observability"`
+	Integration   IntegrationConfig    `koanf:"integration" validate:"required"`
 }
 
 // primary config struct
@@ -68,6 +69,10 @@ type AuthConfig struct {
 // Redis config struct (for caching and session management)
 type RedisConfig struct {
 	Address string `koanf:"address" validate:"required"`
+}
+
+type IntegrationConfig struct {
+	ResendAPIKey string `koanf:"resend_api_key" validate:"required"`
 }
 
 func LoadConfig() (*Config, error) {
